@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepurposeLabs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            color: #FFFFFF;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hero-content,
+.diagnostic-container,
+.results-grid,
+.phase-grid,
+.constraints-box {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+       .logo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    color: #FFFFFF;
+    position: relative;
+    line-height: 1;
+}
+
+.logo::after {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.65);
+    margin-top: 6px;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-select-wrapper label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: #FFFFFF;
+}
+
+.custom-select {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  color: #fff;
+  padding: 0.9rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-select:hover {
+  border-color: rgba(255,255,255,0.3);
+}
+
+.custom-select .selected::after {
+  content: '▼';
+  float: right;
+  font-size: 0.6rem;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.6);
+  transition: transform 0.3s;
+}
+
+.custom-select.open .selected::after {
+  transform: rotate(180deg);
+}
+
+.custom-select .options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  margin-top: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  list-style: none;
+  padding: 0;
+}
+
+.custom-select.open .options {
+  display: block;
+}
+
+.custom-select .options li {
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.custom-select .options li:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+        
+        .cta-nav {
+            padding: 0.6rem 1.4rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #FFFFFF;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+        
+        .cta-nav .full-text {
+            display: inline;
+        }
+        
+        .cta-nav .short-text {
+            display: none;
+        }
+        
+        .cta-nav:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 6% 6rem;
+        }
+        
+        .hero-content {
+            max-width: 680px;
+        }
+        
+        .hero-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+            color: #FFFFFF;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        .cta-primary {
+            padding: 1rem 2.2rem;
+            background: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            color: #000000;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: -0.2px;
+        }
+        
+        .cta-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-subtext {
+            display: block;
+            margin-top: 0.8rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+        }
+        
+        .select-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .select-wrapper label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #FFFFFF;
+            letter-spacing: -0.2px;
+        }
+        
+       select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background-color: #111; /* solid black background */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #fff; /* white text */
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23FFFFFF' stroke-opacity='0.8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+
+select option {
+    background-color: #111;
+    color: #fff;
+}
+
+select:hover, select:focus {
+    border-color: #fff;
+    background-color: #222;
+    outline: none;
+}
+
+        
+        select:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+        }
+        
+        section {
+            padding: 6rem 6%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            color: #FFFFFF;
+        }
+        
+        .section-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+        .diagnostic-container {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 3rem;
+        }
+        
+        .diagnostic-disclaimer {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 2.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+            letter-spacing: -0.2px;
+        }
+        
+        .input-group .input-note {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 0.3rem;
+            font-weight: 400;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:active {
+            cursor: grabbing;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            cursor: grab;
+            border: none;
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-top: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .results-wrapper {
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .results-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .results-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+        
+        .results-note {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.5;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .result-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .result-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 500;
+        }
+        
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: -0.8px;
+        }
+        
+        .silence-moment {
+            margin-top: 2.5rem;
+            padding: 2rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in;
+        }
+        
+        .silence-moment.visible {
+            opacity: 1;
+        }
+        
+        .silence-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+        }
+        
+        .diagnostic-interpretation {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+        }
+        
+        .identity-reframe {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+        
+        .diagnostic-inevitability {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+        }
+        
+        .pre-review-gate {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .gate-header {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.2px;
+        }
+        
+        .gate-body {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+        
+        .gate-final {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.6;
+        }
+        
+        .cta-container {
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+        
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+        
+        .phase-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .phase-number {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .phase-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: -0.3px;
+        }
+        
+        .phase-item p {
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+        
+        .constraints-box {
+            max-width: 600px;
+            margin: 3rem auto 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .constraints-box h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+        }
+        
+        .constraints-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .constraints-box li {
+            padding: 0.6rem 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+        
+        .constraints-box li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #cta-section {
+            text-align: center;
+            padding: 7rem 6%;
+        }
+        
+        #cta-section .section-description {
+            margin: 0 auto 2.5rem;
+        }
+        
+        .cta-wrapper {
+            display: inline-block;
+        }
+        
+        footer {
+            background: #000000;
+            padding: 4rem 6% 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+        
+        .footer-text {
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .footer-email {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .footer-email:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+       @media (max-width: 768px) {
+    /* Hero */
+    .hero {
+        padding: 6rem 4% 4rem;
+        min-height: auto;
+    }
+.cta-primary,
+.cta-nav {
+    width: 100%;            /* make buttons full-width */
+    font-size: 1rem;        /* slightly bigger for readability */
+    padding: 1rem;          /* enough padding for touch targets */
+    text-align: center;
+}
+
+.cta-nav .full-text {
+    display: none;          /* keep short text for small screens */
+}
+
+.cta-nav .short-text {
+    display: inline;
+}
+
+select {
+    width: 100%;            /* fill container width */
+    font-size: 0.95rem;     /* readable font size */
+    padding: 0.8rem 1rem;   /* enough padding */
+}
+
+    h1 {
+        font-size: 2rem;
+        letter-spacing: -1px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    /* Nav */
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 4%;
+    }
+
+    .cta-nav {
+        margin-top: 0.6rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Sections & Containers */
+    section {
+        padding: 4rem 4%;
+    }
+
+    .diagnostic-container {
+        padding: 1.5rem;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .phase-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .constraints-box {
+        margin: 2rem auto 0;
+        padding: 1.5rem;
+    }
+
+    /* Dropdowns */
+    .custom-select {
+        padding: 0.8rem 1rem;
+    }
+
+    .custom-select .options li {
+        padding: 0.8rem 1rem;
+    }
+
+    /* Sliders */
+    input[type="range"] {
+        height: 6px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        width: 18px;
+        height: 18px;
+    }
+    input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* CTAs */
+    .cta-primary {
+        width: 100%;
+        padding: 1rem 0;
+        font-size: 0.95rem;
+    }
+}
+
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="logo">RepurposeLabs</div>
+        <button class="cta-nav" onclick="scrollToCTA()">
+            <span class="full-text">Request Infrastructure Review</span>
+            <span class="short-text">Request Review</span>
+        </button>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">Systems for creators</div>
+            <h1>You create content. We build the systems around it.</h1>
+            <p class="hero-description">Revenue systems and distribution for creators operating at scale.</p>
+            <button class="cta-primary" onclick="scrollToCTA()">Request Infrastructure Review</button>
+            <span class="cta-subtext">Response within 72 hours.</span>
+        </div>
+    </section>
+    
+    <section id="diagnostic">
+        <div class="section-label">Revenue Systems Diagnostic</div>
+        <h2>Revenue Capacity Analysis</h2>
+        <p class="section-description">Identifies gaps in how your content turns into income.</p>
+        
+        <div class="diagnostic-container">
+            <div class="diagnostic-disclaimer">
+                Assumes consistent content output and basic distribution. Numbers show potential with proper systems in place.
+            </div>
+            
+            <div class="input-group">
+                <label for="audience">
+                    Audience Size
+                    <div class="input-note">Total monthly reach across primary platform</div>
+                </label>
+                <input type="range" id="audience" min="0" max="6" value="3" step="1" oninput="runDiagnostic()">
+                <div class="slider-value" id="audienceValue">50K–100K</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="frequency">
+                    Content Output Frequency
+                    <div class="input-note">Average pieces of content per week</div>
+                </label>
+                <input type="range" id="frequency" min="1" max="15" value="5" step="1" oninput="runDiagnostic()">
+                <div class="slider-value" id="frequencyValue">5 per week</div>
+            </div>
+            
+           <div class="custom-select-wrapper">
+  <label>Current Systems</label>
+  <div class="custom-select" id="maturity-select">
+    <div class="selected">Structured — Basic systems running</div>
+    <ul class="options">
+      <li data-value="0.7">Early — No revenue systems yet</li>
+      <li data-value="1.0">Structured — Basic systems running</li>
+      <li data-value="1.3">Scaled — Automated systems running</li>
+    </ul>
+  </div>
+  <select id="maturity" style="display:none;">
+    <option value="0.7">Early — No revenue systems yet</option>
+    <option value="1.0" selected>Structured — Basic systems running</option>
+    <option value="1.3">Scaled — Automated systems running</option>
+  </select>
+</div>
+
+<div class="custom-select-wrapper">
+  <label>Primary Market</label>
+  <div class="custom-select" id="market-select">
+    <div class="selected">Other</div>
+    <ul class="options">
+      <li data-value="1.2">United States</li>
+      <li data-value="1.15">United Kingdom</li>
+      <li data-value="1.1">Canada</li>
+      <li data-value="1.0">Australia</li>
+      <li data-value="0.9">Singapore</li>
+      <li data-value="0.9">Germany</li>
+      <li data-value="0.85">France</li>
+      <li data-value="0.85">Mexico</li>
+      <li data-value="0.8">Nigeria</li>
+      <li data-value="0.8">Indonesia</li>
+      <li data-value="0.75">South Africa</li>
+      <li data-value="0.75">Brazil</li>
+      <li data-value="0.7">Kenya</li>
+      <li data-value="0.7">India</li>
+      <li data-value="0.95">Other</li>
+    </ul>
+  </div>
+  <select id="market" style="display:none;">
+    <option value="1.2">United States</option>
+    <option value="1.15">United Kingdom</option>
+    <option value="1.1">Canada</option>
+    <option value="1.0">Australia</option>
+    <option value="0.9">Singapore</option>
+    <option value="0.9">Germany</option>
+    <option value="0.85">France</option>
+    <option value="0.85">Mexico</option>
+    <option value="0.8">Nigeria</option>
+    <option value="0.8">Indonesia</option>
+    <option value="0.75">South Africa</option>
+    <option value="0.75">Brazil</option>
+    <option value="0.7">Kenya</option>
+    <option value="0.7">India</option>
+    <option value="0.95" selected>Other</option>
+  </select>
+</div>
+
+            
+            <div class="results-wrapper">
+                <div class="results-header">
+                    <h3>Monthly Revenue Potential</h3>
+                    <p class="results-note">Based on standard conversion rates and distribution patterns.</p>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Current State</div>
+                        <div class="result-value" id="currentRevenue">$0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">With Better Systems</div>
+                        <div class="result-value" id="projectedRevenue">$0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Revenue Gap</div>
+                        <div class="result-value" id="gapRevenue">$0</div>
+                    </div>
+                </div>
+                
+                <div class="silence-moment" id="silenceMoment">
+                    <p class="silence-text">Most people close the tab here.</p>
+                </div>
+                
+                <div class="diagnostic-interpretation">
+                    <div id="interpretationText"></div>
+                    <div class="identity-reframe">At a certain scale, output stops being the problem. Systems become the constraint.</div>
+                    <div class="diagnostic-inevitability">Delay doesn't preserve the current state. It compounds inefficiency.</div>
+                </div>
+                
+                <div class="pre-review-gate">
+                    <div class="gate-header">Before requesting a review</div>
+                    <div class="gate-body">
+                        This review is not a consultation or onboarding call. We proceed only when system changes are likely to materially impact revenue in the next cycle.
+                        <br><br>
+                        Most creators are not at this stage yet.
+                    </div>
+                    <div class="gate-final">
+                        If you're still validating ideas or looking for general advice, this step will not be useful yet.
+                    </div>
+                </div>
+                
+                <div class="cta-container">
+                    <button class="cta-primary" onclick="window.location.href='mailto:repurposelabs@gmail.com?subject=Infrastructure Review Request'">Request Infrastructure Review</button>
+                    <span class="cta-subtext">Response within 72 hours.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-it-works">
+        <div class="section-label">How It Works</div>
+        <h2>How We Build Your Systems</h2>
+        <p class="section-description">Three phases to turn your content into consistent revenue.</p>
+        
+        <div class="phase-grid">
+            <div class="phase-item">
+                <div class="phase-number">Phase 1</div>
+                <h3>Systems Audit</h3>
+                <p>Complete mapping of current systems, distribution channels, and revenue capture. Identify structural constraints and gaps.</p>
+            </div>
+            
+            <div class="phase-item">
+                <div class="phase-number">Phase 2</div>
+                <h3>System Build</h3>
+                <p>Design and deploy integrated revenue systems. Automate distribution, payment processing, and audience segmentation.</p>
+            </div>
+            
+            <div class="phase-item">
+                <div class="phase-number">Phase 3</div>
+                <h3>Scaling</h3>
+                <p>Continuous optimization of conversion and efficiency. Progressive expansion of revenue channels across platforms.</p>
+            </div>
+        </div>
+        
+        <div class="constraints-box">
+            <h3>Minimum Requirements</h3>
+            <ul>
+                <li>At least 10,000 monthly reach</li>
+                <li>Consistent output of 3+ pieces per week</li>
+                <li>Existing audience engagement</li>
+                <li>Commitment to structured processes</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section id="cta-section">
+        <div class="section-label">Access</div>
+        <h2>Request Infrastructure Review</h2>
+        <p class="section-description">Limited capacity. We review applications based on fit and readiness.</p>
+        <div class="cta-wrapper">
+            <button class="cta-primary" onclick="window.location.href='mailto:repurposelabs@gmail.com?subject=Infrastructure Review Request'">Request Review</button>
+            <span class="cta-subtext">Response within 72 hours.</span>
+        </div>
+    </section>
+    
+    <footer>
+        <p class="footer-text">RepurposeLabs — Revenue systems for content operations</p>
+        <a href="mailto:repurposelabs@gmail.com" class="footer-email">repurposelabs@gmail.com
+</a>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audienceRanges = [
+        { label: "<10K", value: 5000 },
+        { label: "10K–25K", value: 17500 },
+        { label: "25K–50K", value: 37500 },
+        { label: "50K–100K", value: 75000 },
+        { label: "100K–250K", value: 175000 },
+        { label: "250K–500K", value: 375000 },
+        { label: "500K+", value: 750000 }
+    ];
+
+    let silenceTimeout = null;
+
+    function getMaturityInterpretation(m) {
+        if (m <= 0.7) {
+            return "You create enough content to support revenue systems, but those systems aren't built yet. More content without systems creates more work, not more income.";
+        }
+        if (m <= 1.0) {
+            return "Your operation works, but your systems are scattered. Creating more content gives you less return until you consolidate.";
+        }
+        return "Your revenue is limited by system efficiency, not audience size. Better systems matter more than more followers.";
+    }
+
+    window.runDiagnostic = function () {
+        const audienceSlider = document.getElementById('audience');
+        const frequencySlider = document.getElementById('frequency');
+        const maturitySelect = document.getElementById('maturity');
+        const marketSelect = document.getElementById('market');
+
+        if (!audienceSlider || !frequencySlider || !maturitySelect || !marketSelect) {
+            return;
+        }
+
+        const audienceIndex = parseInt(audienceSlider.value, 10);
+        const frequency = parseInt(frequencySlider.value, 10);
+        const maturity = parseFloat(maturitySelect.value);
+        const market = parseFloat(marketSelect.value);
+
+        document.getElementById('audienceValue').textContent =
+            audienceRanges[audienceIndex].label;
+
+        document.getElementById('frequencyValue').textContent =
+            `${frequency} per week`;
+
+        const audience = audienceRanges[audienceIndex].value;
+
+        // Core assumptions
+        const engagementRate = 0.03;
+        const conversionRate = 0.015;
+        const avgTransaction = 50;
+
+        const monthlyEngaged = audience * engagementRate;
+        const conversions = monthlyEngaged * conversionRate;
+        const baseRevenue = conversions * avgTransaction;
+
+        const frequencyMultiplier = 1 + (frequency / 15) * 0.4;
+        const distributionMultiplier = 1.8;
+
+        const currentRevenue =
+            baseRevenue * maturity * market;
+
+        const projectedRevenue =
+            currentRevenue * frequencyMultiplier * distributionMultiplier;
+
+        const gap = projectedRevenue - currentRevenue;
+
+        document.getElementById('currentRevenue').textContent =
+            `$${Math.round(currentRevenue).toLocaleString()}`;
+
+        document.getElementById('projectedRevenue').textContent =
+            `$${Math.round(projectedRevenue).toLocaleString()}`;
+
+        document.getElementById('gapRevenue').textContent =
+            `$${Math.round(gap).toLocaleString()}`;
+
+        document.getElementById('interpretationText').textContent =
+            getMaturityInterpretation(maturity);
+
+        const silence = document.getElementById('silenceMoment');
+        silence.classList.remove('visible');
+
+        clearTimeout(silenceTimeout);
+        silenceTimeout = setTimeout(() => {
+            silence.classList.add('visible');
+        }, 2200);
+    };
+
+    // Run once on load
+    runDiagnostic();
+});
+
+document.querySelectorAll('.custom-select').forEach(select => {
+  const selected = select.querySelector('.selected');
+  const optionsContainer = select.querySelector('.options');
+  const optionsList = optionsContainer.querySelectorAll('li');
+
+  selected.addEventListener('click', () => {
+    select.classList.toggle('open');
+  });
+
+  optionsList.forEach(option => {
+    option.addEventListener('click', () => {
+      selected.textContent = option.textContent;
+      select.classList.remove('open');
+
+      // Update hidden select to keep runDiagnostic working
+      const hiddenSelectId = select.id === 'maturity-select' ? 'maturity' : 'market';
+      const hiddenSelect = document.getElementById(hiddenSelectId);
+      hiddenSelect.value = option.dataset.value;
+
+      runDiagnostic();
+    });
+  });
+});
+
+// Close dropdowns if click outside
+window.addEventListener('click', e => {
+  document.querySelectorAll('.custom-select').forEach(select => {
+    if (!select.contains(e.target)) {
+      select.classList.remove('open');
+    }
+  });
+});
+
+
+function scrollToCTA() {
+    document.getElementById('cta-section')
+        .scrollIntoView({ behavior: 'smooth' });
+}
+</script>
