@@ -3,38 +3,363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RepurposeLabs — AI Systems for Creators</title>
-<meta name="description" content="RepurposeLabs builds AI systems that make creators available to their audience 24/7. Your voice. Your knowledge. Your presence — without you being there.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>RepurposeLabs — Your Audience Is Waiting</title>
+<meta name="description" content="RepurposeLabs builds AI twins for creators. Your voice. Your knowledge. Your presence — without you being there.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.umd.cjs" crossorigin></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 :root{
-  --bg:#080808;--bg2:#0D0D0D;--surface:#111111;--surface2:#161616;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
-  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.07);
-  --gold-mid:rgba(201,168,76,0.15);--green:#2ECC71;--green-dim:rgba(46,204,113,0.08);
-  --pink:#E056A0;--white:#F0EDE8;--muted:rgba(240,237,232,0.38);--muted2:rgba(240,237,232,0.58);
+  --bg:#070707;
+  --surface:#0F0F0F;
+  --surface2:#141414;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.11);
+  --gold:#C8A84B;
+  --gold2:#E6C768;
+  --gold-dim:rgba(200,168,75,0.08);
+  --gold-mid:rgba(200,168,75,0.16);
+  --green:#00E676;
+  --green-dim:rgba(0,230,118,0.08);
+  --red:#FF4444;
+  --white:#EDE9E3;
+  --muted:rgba(237,233,227,0.36);
+  --muted2:rgba(237,233,227,0.58);
+  --display:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
 }
-body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden;}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.45;}
-.wrap{max-width:1080px;margin:0 auto;padding:0 48px;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+body{background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden;line-height:1.6;}
+
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.5;}
+
+/* CURSOR */
+*{cursor:none;}
+#cur{position:fixed;width:7px;height:7px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:transform 0.1s;}
+#cur-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(200,168,75,0.3);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:all 0.12s ease;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+/* ANIMATIONS */
 @keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.35;transform:scale(0.75);}}
-@keyframes ring{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.6);opacity:0;}}
-@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes glow{0%,100%{box-shadow:0 0 40px rgba(46,204,113,0.15);}50%{box-shadow:0 0 80px rgba(46,204,113,0.3);}}
-.reveal{opacity:1;transform:translateY(0);transition:opacity 0.85s ease,transform 0.85s ease;}
-.reveal.animate{opacity:0;transform:translateY(40px);}
-.reveal.animate.visible{opacity:1;transform:translateY(0);}
-.d1{transition-delay:0.1s;}.d2{transition-delay:0.2s;}.d3{transition-delay:0.3s;}.d4{transition-delay:0.45s;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:background 0.4s,border-color 0.4s;border-bottom:1px solid transparent;}
-nav.scrolled{background:rgba(8,8,8,0.94);backdrop-filter:blur(20px);border-bottom-color:var(--border);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.2;transform:scale(0.7);}}
+@keyframes ring{0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.8);opacity:0;}}
+@keyframes ring2{0%,100%{transform:scale(1);opacity:0.4;}50%{transform:scale(2.4);opacity:0;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes callPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,0.4);}50%{box-shadow:0 0 0 20px rgba(0,230,118,0);}}
+@keyframes typing{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
+@keyframes waveform{0%,100%{height:4px;}50%{height:20px;}}
+@keyframes statusFade{0%{opacity:0;transform:translateY(6px);}20%{opacity:1;transform:translateY(0);}80%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-6px);}}
+@keyframes progressBar{from{width:0%;}to{width:100%;}}
+@keyframes ringExpand{0%{transform:translate(-50%,-50%) scale(1);opacity:0.8;}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0;}}
+
+/* STATUS SEQUENCE — shown during 18 second wait */
+.status-sequence{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:8px 0;
+}
+.status-sequence.show{display:flex;}
+.status-line{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+.status-line.active{
+  opacity:1;
+  color:var(--gold);
+}
+.status-line.done{
+  opacity:0.3;
+  color:var(--muted);
+}
+.status-dot-s{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--muted);
+  flex-shrink:0;
+}
+.status-line.active .status-dot-s{
+  background:var(--gold);
+  box-shadow:0 0 6px var(--gold);
+  animation:pulse 1s infinite;
+}
+.status-line.done .status-dot-s{
+  background:var(--green);
+}
+.status-check{display:none;color:var(--green);}
+.status-line.done .status-check{display:inline;}
+.status-line.done .status-dot-s{display:none;}
+
+/* PROGRESS BAR */
+.connect-progress{
+  width:100%;max-width:200px;
+  height:2px;
+  background:rgba(255,255,255,0.06);
+  border-radius:2px;
+  overflow:hidden;
+  display:none;
+}
+.connect-progress.show{display:block;}
+.connect-progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--green));
+  border-radius:2px;
+  width:0%;
+}
+
+/* RINGING STATE */
+.ringing-wrap{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.ringing-wrap.show{display:flex;}
+.ringing-rings{
+  position:relative;
+  width:80px;height:80px;
+  margin-bottom:4px;
+}
+.rr{
+  position:absolute;
+  top:50%;left:50%;
+  width:80px;height:80px;
+  border:1px solid rgba(200,168,75,0.6);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.rr1{animation:ringExpand 1.5s ease infinite;}
+.rr2{animation:ringExpand 1.5s ease 0.4s infinite;}
+.rr3{animation:ringExpand 1.5s ease 0.8s infinite;}
+.rr-center{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:44px;height:44px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(200,168,75,0.4);
+}
+.rr-icon{width:20px;height:20px;fill:#070707;}
+.ringing-text{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  animation:pulse 1.5s ease infinite;
+}
+
+/* POST CALL BOOKING */
+#postCallCta{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:8px 0;
+  animation:slideIn 0.5s ease forwards;
+}
+#postCallCta.show{display:flex;}
+.post-cta-headline{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:17px;
+  color:var(--white);
+  text-align:center;
+}
+.post-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:#070707;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  padding:14px 24px;
+  border-radius:3px;
+  text-decoration:none;
+  box-shadow:0 0 32px rgba(200,168,75,0.4);
+  animation:callPulse 2.5s ease infinite;
+}
+.post-cta-note{
+  font-family:var(--mono);
+  font-size:8px;
+  color:var(--muted);
+  letter-spacing:0.12em;
+  text-align:center;
+}
+
+.wrap{max-width:1060px;margin:0 auto;padding:0 44px;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.9s ease,transform 0.9s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.1s;}.d2{transition-delay:0.22s;}.d3{transition-delay:0.36s;}.d4{transition-delay:0.52s;}
+
+/* ═══════════ NAV ═══════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 0;transition:background 0.4s,border-color 0.4s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(7,7,7,0.95);backdrop-filter:blur(20px);border-bottom-color:var(--border);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;}
-.nav-cta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,0.3);padding:10px 20px;border-radius:3px;transition:background 0.2s;}
-.nav-cta:hover{background:var(--gold-mid);}
+.nav-logo{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:0.04em;color:var(--white);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:32px;}
+.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
+.nav-link:hover{color:var(--white);}
+.nav-cta{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;color:var(--bg);background:var(--gold);padding:11px 22px;border-radius:2px;text-decoration:none;text-transform:uppercase;transition:background 0.2s;}
+.nav-cta:hover{background:var(--gold2);}
+
+/* ═══════════ HERO ═══════════ */
+/* PSYCHOLOGY: Pattern interrupt headline. Loss framing before feature framing. Immediate proof via live call. */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:1200px;height:800px;background:radial-gradient(ellipse at 50% 0%,rgba(200,168,75,0.05) 0%,rgba(0,230,118,0.03) 40%,transparent 70%);pointer-events:none;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;}
+.hero-left{}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+.hero-eyebrow-text{font-family:var(--mono);font-size:10px;letter-spacing:0.25em;color:var(--green);text-transform:uppercase;}
+.hero-headline{font-family:var(--display);font-weight:800;font-size:clamp(42px,5.2vw,68px);line-height:0.88;letter-spacing:-0.02em;margin-bottom:28px;}
+.hero-headline .line1{color:rgba(237,233,227,0.18);display:block;}
+.hero-headline .line2{color:var(--white);display:block;}
+.hero-headline .line3{background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3.5s linear infinite;display:block;}
+.hero-sub{font-size:16px;color:var(--muted2);max-width:440px;line-height:1.9;font-weight:300;margin-bottom:40px;}
+.hero-sub strong{color:var(--white);font-weight:500;}
+/* PSYCHOLOGY: Loss framing stat — anchors the problem before showing solution */
+.hero-stat-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:44px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.hero-stat{padding:16px 20px;border-right:1px solid var(--border);}.hero-stat:last-child{border-right:none;}
+.hero-stat-num{font-family:var(--display);font-size:28px;color:var(--gold);line-height:1;margin-bottom:4px;}
+.hero-stat-label{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;line-height:1.4;}
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.btn-primary{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:15px 30px;border-radius:2px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:background 0.2s,transform 0.15s;}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-ghost{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted2);background:transparent;padding:15px 24px;border-radius:2px;border:1px solid var(--border2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ═══════════ CALL WIDGET — HERO RIGHT ═══════════ */
+/* PSYCHOLOGY: The call IS the proof. Experiencing before buying is the most powerful sales tool in existence. */
+.call-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;overflow:hidden;position:relative;}
+.call-card-top{background:var(--surface2);padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.call-card-brand{display:flex;align-items:center;gap:10px;}
+.call-card-logo{width:28px;height:28px;background:var(--gold-mid);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:14px;font-weight:800;color:var(--gold);}
+.call-card-name{font-size:13px;font-weight:600;color:var(--white);}
+.call-card-sub{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;}
+.call-status-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:0.12em;background:var(--green-dim);border:1px solid rgba(0,230,118,0.2);padding:5px 10px;border-radius:100px;}
+.call-status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
+
+/* Call center area */
+.call-center{padding:48px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.call-btn-wrap{position:relative;margin-bottom:28px;}
+.call-ring{position:absolute;inset:-16px;border-radius:50%;border:1px solid rgba(200,168,75,0.2);animation:ring 2.5s ease infinite;}
+.call-ring2{position:absolute;inset:-28px;border-radius:50%;border:1px solid rgba(200,168,75,0.1);animation:ring2 2.5s ease 0.5s infinite;}
+/* THE CALL BUTTON */
+#callBtn{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:1;transition:transform 0.2s,box-shadow 0.2s;}
+#callBtn:hover{transform:scale(1.06);box-shadow:0 12px 40px rgba(200,168,75,0.35);}
+#callBtn.calling{background:linear-gradient(135deg,var(--green),#00BF60);animation:callPulse 1.5s infinite;}
+#callBtn.active{background:linear-gradient(135deg,#333,#222);}
+.call-icon{width:32px;height:32px;fill:var(--bg);}
+.call-label{font-size:15px;font-weight:500;color:var(--white);margin-bottom:6px;}
+.call-sublabel{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;max-width:240px;line-height:1.5;}
+
+/* Waveform — shows when call is active */
+#waveform{display:none;align-items:center;gap:3px;height:24px;margin:16px 0;}
+#waveform.show{display:flex;}
+.wave-bar{width:3px;background:var(--gold);border-radius:2px;animation:waveform 0.8s ease infinite;}
+.wave-bar:nth-child(1){animation-delay:0s;}
+.wave-bar:nth-child(2){animation-delay:0.1s;}
+.wave-bar:nth-child(3){animation-delay:0.2s;}
+.wave-bar:nth-child(4){animation-delay:0.3s;}
+.wave-bar:nth-child(5){animation-delay:0.15s;}
+.wave-bar:nth-child(6){animation-delay:0.05s;}
+.wave-bar:nth-child(7){animation-delay:0.25s;}
+
+/* Call transcript preview */
+.call-transcript{padding:16px 20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;min-height:80px;}
+.transcript-msg{display:flex;gap:8px;align-items:flex-start;animation:slideIn 0.3s ease;}
+.transcript-avatar{width:22px;height:22px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(200,168,75,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold);font-family:var(--mono);}
+.transcript-bubble{font-size:12px;color:var(--muted2);line-height:1.5;font-style:italic;}
+.transcript-bubble.ai{color:var(--white);}
+
+/* Call disclaimer */
+.call-disclaimer{padding:12px 20px;background:rgba(200,168,75,0.04);border-top:1px solid var(--border);font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center;letter-spacing:0.1em;line-height:1.6;}
+
+/* ═══════════ TICKER ═══════════ */
+.ticker{overflow:hidden;padding:13px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);}
+.ticker-track{display:flex;animation:ticker 24s linear infinite;white-space:nowrap;}
+.ticker-item{display:flex;align-items:center;gap:20px;padding:0 28px;font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+.ticker-dot{color:var(--gold);font-size:7px;}
+
+/* ═══════════ PROBLEM SECTION ═══════════ */
+/* PSYCHOLOGY: Agitation before solution. Name the pain specifically so they feel seen. */
+.problem{padding:100px 0;border-bottom:1px solid var(--border);}
+.section-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.section-eyebrow-line{width:24px;height:1px;background:var(--gold);}
+.section-eyebrow-text{font-family:var(--mono);font-size:10px;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;}
+.problem-headline{font-family:var(--display);font-weight:800;font-size:clamp(36px,4.5vw,58px);line-height:0.9;letter-spacing:-0.01em;margin-bottom:24px;}
+.problem-headline .dim{color:var(--muted);}
+.problem-body{font-size:17px;color:var(--muted2);line-height:1.9;max-width:560px;font-weight:300;margin-bottom:56px;}
+.problem-body strong{color:var(--white);font-weight:500;}
+.problem-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.p-stat{background:var(--surface);padding:32px 28px;}
+.p-stat-num{font-family:var(--display);font-size:48px;line-height:1;color:var(--red);margin-bottom:8px;letter-spacing:-0.01em;}
+.p-stat-text{font-size:13px;color:var(--muted2);line-height:1.6;font-weight:300;}
+.p-stat-text strong{color:var(--white);font-weight:500;display:block;margin-bottom:4px;}
+
+/* ═══════════ HOW IT WORKS ═══════════ */
+/* PSYCHOLOGY: Show the experience, not the technology. Specificity builds trust. */
+.how{padding:100px 0;border-bottom:1px solid var(--border);}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.how-left{}
+.how-steps{display:flex;flex-direction:column;gap:0;margin-top:48px;}
+.how-step{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border);position:relative;}
+.how-step:last-child{border-bottom:none;}
+.how-step-num{font-family:var(--display);font-size:42px;color:rgba(237,233,227,0.06);line-height:1;flex-shrink:0;width:48px;}
+.how-step-content{}
+.how-step-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;}
+.how-step-desc{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+/* Fake phone mockup showing a call in progress */
+.phone-mockup{background:var(--surface);border:1px solid var(--border2);border-radius:16px;overflow:hidden;position:sticky;top:120px;}
+.phone-top{background:var(--surface2);padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.phone-caller{font-size:13px;font-weight:600;color:var(--white);}
+.phone-time{font-family:var(--mono);font-size:11px;color:var(--green);}
+.phone-transcript{padding:20px;display:flex;flex-direction:column;gap:12px;min-height:300px;}
+.pt-msg{display:flex;flex-direction:column;gap:4px;max-width:82%;}
+.pt-msg.them{align-self:flex-end;}
+.pt-bubble{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.5;}
+.pt-bubble.ai{background:var(--gold-dim);border:1px solid rgba(200,168,75,0.15);color:var(--white);}
+.pt-bubble.human{background:var(--surface2);border:1px solid var(--border);color:var(--muted2);}
+.pt-label{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;}
+.pt-label.ai-l{color:rgba(200,168,75,0.5);}
+.phone-wave{padding:16px 20px;background:var(--surface2);border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.phone-wave-bars{display:flex;align-items:center;gap:2.5px;}
+.pwb{width:2.5px;border-radius:2px;background:var(--gold);}
+
+/* ═══════════ FEATURES ═══════════ */
+/* PSYCHOLOGY: Lead with the most tangible/believable features. Voice cloning last = peak end rule. */
+.features{padding:100px 0;border-bottom:1px solid var(--border);}
+.features-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:64px;}
+.features-headline{font-family:var(--display);font-weight:800;font-size:clamp(36px,4.5vw,58px);line-height:0.9;letter-spacing:-0.01em;}
+.features-sub{font-size:15px;color:var(--muted2);line-height:1.8;font-weight:300;}
+.fea.nav-cta:hover{background:var(--gold-mid);}
 .hero{min-height:100vh;display:flex;align-items:center;padding-top:100px;padding-bottom:80px;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1000px;height:700px;background:radial-gradient(ellipse at center top,rgba(46,204,113,0.04) 0%,rgba(201,168,76,0.03) 40%,transparent 70%);pointer-events:none;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;}
