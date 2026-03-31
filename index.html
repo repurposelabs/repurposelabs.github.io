@@ -1219,12 +1219,12 @@ function startCall() {
           vapi.on('speech-start', () => document.getElementById('waveform').classList.add('show'));
           vapi.on('speech-end', () => document.getElementById('waveform').classList.remove('show'));
           vapi.on('message', onMessage);
-          vapi.start('c8c76bb1-b44b-49d7-a70a-1476c0293718');
+          vapi.start('46aabd68-f944-4bdd-a359-e1f18bbda69d');
         } else if(SDK && !vapi) {
           // html-script-tag mode — use vapiSDK.run()
           vapi = SDK.run({
             apiKey: 'c8e0fca1-711e-4a93-a05c-91d2a0c1ae10',
-            assistant: 'c8c76bb1-b44b-49d7-a70a-1476c0293718',
+            assistant: '46aabd68-f944-4bdd-a359-e1f18bbda69d',
             config: {
               position: 'bottom-right',
               offset: '40px',
